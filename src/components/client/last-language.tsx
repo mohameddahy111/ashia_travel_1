@@ -64,7 +64,9 @@ export default function LanguageMenu() {
     setLocale(lang)
     setAnchorEl(null);
   };
-
+function closeList (){
+  setAnchorEl(null);
+}
   return (
     <div>
       <Button
@@ -86,7 +88,7 @@ export default function LanguageMenu() {
         }}
         anchorEl={anchorEl}
         open={open}
-        // onClose={handleClose}
+        onClose={closeList}
       >
         <MenuItem onClick={()=>handleClose("pl")} disableRipple>
           <Image priority
