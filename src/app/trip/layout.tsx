@@ -48,7 +48,7 @@ export default function TripLayout({
                   {t("menu.trip program")}
                 </Typography>
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton LinkComponent={"a"} href="/trip/connect_info/">
                 <Typography variant="body1" textTransform={"capitalize"}>
                   {t("menu.connect info")}
                 </Typography>
