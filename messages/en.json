@@ -1,0 +1,13 @@
+{
+  "welcome": "Welcome to Aisha's Travel Program",
+  "phone_label": "Please Enter your phone number",
+  "getStat": "Get Start",
+  "trip": {
+    "title": " Egyptian Pyramid Tour",
+    "menu": {
+      "trip program": "trip program",
+      "connect info": "connect info"
+
+    }
+  }
+}

@@ -1,0 +1,12 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+.button_link{
+  width: fit-content;
+  padding: 5px;
+  text-decoration: "none";
+  background-color: blue;
+
+}
