@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {  TranslateOutlined } from "@mui/icons-material";
 import Image from "next/image";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { setLocale } from "@/app/actions";
 
 const StyledMenu = styled((props: MenuProps) => (
@@ -68,7 +68,7 @@ function closeList (){
   setAnchorEl(null);
 }
   return (
-    <div>
+    <Box p={5}>
       <Button
         id="demo-customized-button"
         aria-controls={open ? "demo-customized-menu" : undefined}
@@ -113,6 +113,6 @@ function closeList (){
           <Typography px={2}>English</Typography>
         </MenuItem>
       </StyledMenu>
-    </div>
+    </Box>
   );
 }

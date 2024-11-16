@@ -2,6 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
+  background:#000;
+  color:"#fdfdfd";
 }
 .button_link{
   width: fit-content;
@@ -9,4 +11,10 @@ body {
   text-decoration: "none";
   background-color: blue;
 
+}
+.Img_bg{
+  background-image: linear-gradient(to left, #333, #fff);
+}
+h4{
+  color:#f58d54;
 }

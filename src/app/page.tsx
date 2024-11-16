@@ -1,57 +1,144 @@
 "use client";
 import { useTranslations } from "next-intl";
 
-import LanguageMenu from "@/components/client/last-language";
-import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputBase,
+  Link,
+  Typography
+} from "@mui/material";
 import Image from "next/image";
 // import Link from "next/link";
-import styles from '@/app/page.module.css'
 
 export default function Home() {
   const t = useTranslations();
-  
+
   return (
     <Box>
       <Box
-        p={2}
-        sx={{ display: "flex", justifyContent: "end", alignItems: "center" }}
-      >
-        <LanguageMenu />
-      </Box>
-      <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: 2
+          backgroundImage: "url('/img/pool_view-wallpaper-1600x900.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh",
+          width: "100vw",
+          position: "relative"
         }}
       >
-        <Image src={"https://vcdn.merlinx.eu/image//getbyid/490654"} priority width={400} height={400} alt="ashia" style={{
-          maxWidth: "100%",
-          maxHeight: "100%"
-        }} />
-      </Box>
-      <Box>
-        <Typography component={'h1'}  variant="h4" fontWeight={600} sx={{ textAlign: "center" }}>
-          {t("welcome")}
-        </Typography>
-      </Box>
-      <Box py={5} display={'flex'} flexDirection={'column'} alignItems={'center'} gap={3}>
-        <Typography component={'p'} variant="body1" sx={{ textAlign: "center" }}>
-          {t("phone_label")}
-        </Typography>
-        <TextField size="small" type='tel'  placeholder=" +48 534 000 231"/>
-      <Box>
-        <Button LinkComponent={'a'} variant='contained' href="/trip" sx={{borderRadius:"20px" , width:"200px"}} >
-          {t("getStat")}
-        </Button>
-        {/* <Link href={'/trip'} className={styles.buttonLink}>
-        {t("getStat")}
+        <Box position={"relative"} alignSelf={"flex-start"} zIndex={2}>
+          <Link href={"https://aishatravel.pl/"} target={"_blank"} zIndex={3}>
+            <Image
+              src="https://vcdn.merlinx.eu/image//getbyid/490654"
+              width={100}
+              height={100}
+              alt={"ashia"}
+            />
+          </Link>
+        </Box>
 
-        </Link> */}
+        <Box
+          position={"absolute"}
+          bgcolor={"#00000051"}
+          top={"0"}
+          left={"0"}
+          bottom={"0"}
+          right={"0"}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap={2}
+        >
+          <Box
+            position={"relative"}
+            display={"flex"}
+            flexDirection={"column"}
+            gap={2}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Typography
+              component={"h1"}
+              variant="h4"
+              sx={{
+                fontSize: "3.5rem",
+                fontWeight: "bold",
+                color: "#f58d54",
+                textShadow: "0px 0px 10px #000000"
+              }}
+            >
+              AISHA
+            </Typography>
+            <Typography
+              component={"h1"}
+              variant="h4"
+              sx={{
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                color: "white",
+                textShadow: "0px 0px 10px #000000"
+              }}
+            >
+              {t("welcome")}
+            </Typography>
+            <Typography color="#fff" >{t("phone_label")}</Typography>
+            <Box>
+              <InputBase
+                size={"small"}
+                placeholder={" +48 660 630 099"}
+                sx={{
+                  bgcolor: "#ffffffca",
+                  px: "15px",
+                  py: "10px",
+                  borderRadius: "20px"
+                }}
+                type={"tel"}
+              />
+            </Box>
+            <Box>
+              <Button
+                LinkComponent={"a"}
+                variant="contained"
+                href={"/trip/egypt"}
+                sx={{
+                  backgroundColor: "#f58d54",
+                  color: "white",
+                  textShadow: "0px 0px 10px #000000",
+                  fontSize: "1.5rem",
+                  fontWeight: "bold",
+                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  marginTop: "20px"
+                }}
+              >
+                {t("getStat")}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
       </Box>
-      </Box>
+      {/* <Box
+        position={"relative"}
+        sx={{ translate: "0 -25%" }}
+        width={"100%"}
+        height={"100%"}
+      >
+        <Grid2 container spacing={1}>
+          <Grid2 size={{md:6 , lg:3 , sm:6 , xs:12}}>
+            <Features />
+          </Grid2>
+          <Grid2 size={{md:6 , lg:3 , sm:6 , xs:12}}>
+            <Features />
+          </Grid2>
+          <Grid2 size={{md:6 , lg:3 , sm:6 , xs:12}}>
+            <Features />
+          </Grid2>
+          <Grid2 size={{md:6 , lg:3 , sm:6 , xs:12}}>
+            <Features />
+          </Grid2>
+        </Grid2>
+      </Box> */}
     </Box>
   );
 }
