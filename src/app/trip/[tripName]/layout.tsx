@@ -1,22 +1,28 @@
-import {
-  AppBar,
-  Box,
-  List,
-  ListItemButton,
-  Toolbar,
-  Typography
-} from "@mui/material";
-import { useTranslations } from "next-intl";
+import { AppBar, Toolbar } from "@mui/material";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 
-export default function TripLayout({
-  children
-}: {
+export interface ITripLayoutProps {
   children: React.ReactNode;
-}) {
-  const t = useTranslations("trip");
+  params: Promise<{ tripName: string }>;
+}
+export default async function TripLayout({
+  children,
+  params
+}: ITripLayoutProps) {
+  const { tripName } = await params;
+  const trip = (await cookies()).get("trip")?.value;
+  if (!trip) {
+    redirect("/");
+  }
+  const data = JSON.parse(trip ?? JSON.stringify(trip));
+  if (data?.trip_name !== tripName) {
+    notFound();
+  }
+
   return (
     <div>
       <AppBar
@@ -24,13 +30,14 @@ export default function TripLayout({
         position="static"
         sx={{ bgcolor: "transparent", color: "#203040" }}
       >
-        <Toolbar sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}>
-          <Link href="/" style={{padding:"20px"}}> 
-
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <Link href="/" style={{ padding: "20px" }}>
             <Image
               src={"https://vcdn.merlinx.eu/image//getbyid/490654"}
               priority
@@ -43,25 +50,10 @@ export default function TripLayout({
                 boxShadow: "0px 0px 2px #fff",
                 borderRadius: "50%",
                 cursor: "pointer"
-
               }}
               className="Img_bg"
             />
           </Link>
-          {/* <Box>
-            <List sx={{display: "flex", justifyContent:"center", alignItems:"center", gap: 1}}>
-              <ListItemButton LinkComponent={"a"} href="/trip/">
-                <Typography variant="body1" color="#f58d54" fontWeight={700}  textTransform={"capitalize"}>
-                  {t("menu.trip program")}
-                </Typography>
-              </ListItemButton>
-              <ListItemButton LinkComponent={"a"} href="/trip/connect_info/">
-                <Typography variant="body1" color="#f58d54" fontWeight={700} textTransform={"capitalize"}>
-                  {t("menu.connect info")}
-                </Typography>
-              </ListItemButton>
-            </List>
-          </Box> */}
         </Toolbar>
       </AppBar>
       {children}

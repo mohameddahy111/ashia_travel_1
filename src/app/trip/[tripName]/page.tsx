@@ -1,38 +1,48 @@
 import Features from "@/components/client/features";
-import SwiperImage from "@/components/swiper/SwiperImage";
+// import SwiperImage from "@/components/swiper/SwiperImage";
 import { HikingOutlined } from "@mui/icons-material";
 import { Box, Grid2, Typography } from "@mui/material";
-import { useTranslations } from "next-intl";
+import { cookies } from "next/headers";
+// import { useTranslations } from "next-intl";
 import React from "react";
 
-const list = [
-  {
-    title: "Program Tipe",
-    content: "Egyptian Pyramid Tour",
-    icon: <HikingOutlined sx={{ color: "#f58d54" ,fontSize:"5rem" , textAlign:"center" }} />,
-    image: "/img/trip_program.jpg"
-  },
-  {
-    title: "Flight Schedules",
-    content: "Egyptian Pyramid Tour",
-    image: "/img/take_off.jpg"
 
-  },
-  {
-    title: "Hotel",
-    content: "Egyptian Pyramid Tour",
-    image: "/img/hotels2.jpg"
+export default async function TripPage() {
+  const trip = (await cookies()).get("trip")?.value;
 
-  },
-  {
-    title: "Connect us",
-    content: "Egyptian Pyramid Tour",
-    image: "/img/help.jpg"  },
-];
-
-export default function TripPage() {
-  // git push https://github.com/mohameddahy111/ashia_travel.git branch-to-move:main
-  const t = useTranslations("trip");
+  const data = JSON.parse(trip ?? JSON.stringify(trip));
+  const list = [
+    {
+      title: "Program Tipe",
+      content: `${data?.trip_name} Program Tipe`,
+      icon: (
+        <HikingOutlined
+          sx={{ color: "#f58d54", fontSize: "5rem", textAlign: "center" }}
+        />
+      ),
+      image: "/img/trip_program.jpg",
+      link:`/trip/${data?.trip_name}/program`
+    },
+    {
+      title: "Flight Schedules",
+      content: `${data?.trip_name} Flight Schedules`,
+      image: "/img/take_off.jpg",
+      link: `/trip/${data?.trip_name}/flight`
+    },
+    {
+      title: "Hotel",
+      content: `${data?.trip_name} Hotel`,
+      image: "/img/hotels2.jpg",
+      link: `/trip/${data?.trip_name}/hotel`
+    },
+    {
+      title: "Connect us",
+      content: `${data?.trip_name} Connect us`,
+      image: "/img/help.jpg",
+      link: `/trip/${data?.trip_name}/connect_info`
+    }
+  ];
+  
 
   return (
     <Box>
@@ -52,19 +62,34 @@ export default function TripPage() {
         px={2}
         color={"white"}
       >
-        <Typography variant="h4" width={"100%"} textAlign={"center"}>
-          {t("title")}
+        <Typography
+          textTransform={"capitalize"}
+          variant="h4"
+          width={"100%"}
+          textAlign={"center"}
+        >
+          {data?.trip_name}
         </Typography>
         <Typography variant="body1" width={"100%"} textAlign={"center"}>
-          8, Dec - 18, Dec 2024
+          {Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          }).format(new Date(data?.start_date))}{" "}
+          -{" "}
+          {Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          }).format(new Date(data?.end_date))}
         </Typography>
-      <Box  margin={'auto'}  mt={10} >
-        <Grid2 container spacing={3}>
-          {list.map((item, index) => (
-            <Features key={index} ele={item} />
-          ))}
-        </Grid2>
-      </Box>
+        <Box margin={"auto"} mt={10}>
+          <Grid2 container spacing={3}>
+            {list.map((item, index) => (
+              <Features key={index} ele={item} />
+            ))}
+          </Grid2>
+        </Box>
       </Box>
     </Box>
   );

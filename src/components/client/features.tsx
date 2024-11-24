@@ -14,9 +14,10 @@ export default function Features({ ele }: IFeaturesProps) {
           maxWidth: "300px",
           margin: "auto",
             // border: " 3px solid #f58c54",
+            borderRadius: "20px",
           bgcolor: "rgba(255, 255, 255, 0.1)",
           color: "white",
-          boxShadow: "0 0px 10px  #f58c54",
+          boxShadow: "0 0px 15px  #f58c54",
           cursor: "pointer",
           ":active": {
             boxShadow: "0 0px 4px  #f58c54"
@@ -24,6 +25,8 @@ export default function Features({ ele }: IFeaturesProps) {
         }}
       >
         <Box
+        component={"a"}
+        href={ele.link}
           display={"flex"}
           flexDirection={"column"}
           gap={2}

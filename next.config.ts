@@ -15,6 +15,9 @@ const nextConfig = {
      {
        hostname: "vcdn.merlinx.eu",
      },
+     {
+       hostname: "i.pinimg.com",
+     },
    ],
   },
 };

@@ -25,7 +25,6 @@ export default function SwiperImage() {
           delay: 2500,
           disableOnInteraction: false,
         }}
-        effect='creative'
         navigation={true}
         modules={[Autoplay,  Navigation , EffectCreative]}
         className="mySwiper"

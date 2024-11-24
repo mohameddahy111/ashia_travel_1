@@ -2,19 +2,39 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background:#000;
-  color:"#fdfdfd";
+  background: #000;
+  color: "#fdfdfd";
 }
-.button_link{
+.button_link {
   width: fit-content;
   padding: 5px;
   text-decoration: "none";
   background-color: blue;
-
 }
-.Img_bg{
+.Img_bg {
   background-image: linear-gradient(to left, #333, #fff);
 }
-h4{
-  color:#f58d54;
+h4 {
+  color: #f58d54;
+}
+.active {
+  color: #388e3c;
+  background-color: #c8e6c9;
+  border-radius: 10px;
+  width: 100px;
+  margin: auto;
+}
+.disactive {
+  color: #c62828;
+  background-color: #ffcdd2;
+  border-radius: 10px;
+  width: 100px;
+  margin: auto;
+}
+.infuture {
+  color: #4527a0;
+  background-color: #d1c4e9;
+  border-radius: 10px;
+  width: 100px;
+  margin: auto;
 }

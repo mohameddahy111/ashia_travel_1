@@ -1,18 +1,24 @@
 "use client";
 import { useTranslations } from "next-intl";
 
-import {
-  Box,
-  Button,
-  InputBase,
-  Link,
-  Typography
-} from "@mui/material";
+import { Box, Button, InputBase, Link, Typography } from "@mui/material";
 import Image from "next/image";
-// import Link from "next/link";
+import React from "react";
+import { login } from "./actions";
+import { useSnackbar } from "notistack";
 
 export default function Home() {
   const t = useTranslations();
+  const [phoneNumber, setPhoneNumber] = React.useState<string>("");
+  const { enqueueSnackbar } = useSnackbar();
+
+  async function loginHandler() {
+    await login(phoneNumber).then((result) => {
+      if (result) {
+        enqueueSnackbar(`${result.message}`, { variant: "error" });
+      }
+    });
+  }
 
   return (
     <Box>
@@ -77,14 +83,19 @@ export default function Home() {
                 fontSize: "1.5rem",
                 fontWeight: "bold",
                 color: "white",
-                textShadow: "0px 0px 10px #000000"
+                textShadow: "0px 0px 10px #000000",
+                textAlign: "center",
+                maxWidth: "90vw",
+                margin: "auto"
               }}
             >
               {t("welcome")}
             </Typography>
-            <Typography color="#fff" >{t("phone_label")}</Typography>
+            <Typography color="#fff">{t("phone_label")}</Typography>
             <Box>
               <InputBase
+                value={phoneNumber}
+                onChange={(event) => setPhoneNumber(event.target.value)}
                 size={"small"}
                 placeholder={" +48 660 630 099"}
                 sx={{
@@ -98,9 +109,8 @@ export default function Home() {
             </Box>
             <Box>
               <Button
-                LinkComponent={"a"}
+                onClick={loginHandler}
                 variant="contained"
-                href={"/trip/egypt"}
                 sx={{
                   backgroundColor: "#f58d54",
                   color: "white",
