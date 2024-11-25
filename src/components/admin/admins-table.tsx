@@ -16,7 +16,7 @@ export interface IAdminsTableProps {
 }
 
 export default function AdminsTable({ data }: IAdminsTableProps) {
-  const dataJson = data;
+  const dataJson = JSON.parse(JSON.stringify(data));
   return (
     <Box >
       <TableContainer>
@@ -49,11 +49,22 @@ export default function AdminsTable({ data }: IAdminsTableProps) {
                       {item.phone}
                     </TableCell>
                     <TableCell align="center" sx={{ color: "#fff" }}>
-                      {item.lastActive}
+                      {item.lastActive ? (
+                        <>
+                                              {Intl.DateTimeFormat("en-US" ,{
+                        year: "numeric",
+                        month: "short",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }).format(new Date(item.lastActive))}
+
+                        </>
+                      ):"New"}
                     </TableCell>
                     <TableCell align="center" sx={{ color: "#fff" }}>
                         <IconButton>
-                            <EditOutlined/>
+                            <EditOutlined sx={{color:"#fff"}} />
                         </IconButton>
                     </TableCell>
                   </TableRow>

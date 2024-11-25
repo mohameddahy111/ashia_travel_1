@@ -10,7 +10,7 @@ export interface IAdminsPageProps {}
 
 export default async function AdminsPage({}: IAdminsPageProps) {
     connectDb()
-    // const allAdmins = await Admin.find({});
+    const allAdmins = await Admin.find({});
 
 
     
@@ -31,7 +31,7 @@ export default async function AdminsPage({}: IAdminsPageProps) {
 
         </Box>
       <DarkBox mt={5}>
-        <AdminsTable data={[]} />
+        <AdminsTable data={JSON.parse(JSON.stringify(allAdmins))} />
       </DarkBox>
     
     </Box>

@@ -5,7 +5,7 @@ export const sideAdminList=[
         link:"/admin/dashboard",
         title:"Dashboard",
         icon:<DashboardOutlined sx={{color:"#f58d54"}}/>,
-        namespace:"admin"
+        namespace:"dashboard"
     },
     {
         link:"/admin/passengers",

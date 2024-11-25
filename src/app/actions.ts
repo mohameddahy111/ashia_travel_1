@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 import Passenger from "@/schemas/passenger.schema";
 import { redirect } from "next/navigation";
 import Admin from "@/schemas/admins.schema";
-import bcryptjs from "bcryptjs"
+import bcryptjs from "bcryptjs";
 
 export const setLocale = async (locale: string) => {
   (await cookies()).set("locale", locale);
@@ -52,9 +52,9 @@ export const deletePessager = async (id: string) => {
     message: "Passenger deleted successfully"
   };
 };
-export const  adminLogin = async(val:{phone:string , password :string} )=>{
+export const adminLogin = async (val: { phone: string; password: string }) => {
   connectDb();
-  const user = await Admin.findOne({ phone:val.phone});
+  const user = await Admin.findOne({ phone: val.phone });
   if (!user) {
     return {
       message: "this phone is not available",
@@ -68,14 +68,57 @@ export const  adminLogin = async(val:{phone:string , password :string} )=>{
       status: 401
     };
   }
-  (await cookies()).set("user", JSON.stringify(user) , {maxAge:60*60*24});
-  redirect(`/admin/dashboard`);
 
+  await Admin.findByIdAndUpdate(
+    user?._id,
+    { lastActive: new Date() },
+    { new: true }
+  );
+  (await cookies()).set("admin", JSON.stringify(user), {
+    maxAge: 60 * 60 * 24
+  });
+  redirect(`/admin/dashboard`);
+};
+export async function createAdmin(values: any) {
+  connectDb();
+  const isExist = await Admin.findOne({ phone: values.phone });
+  if (isExist) {
+    return {
+      message: "Admin already exist",
+      status: 401
+    };
+  }
+  const hashPassword = bcryptjs.hashSync(values.password, 10);
+  values.password = hashPassword;
+  await Admin.create(values);
+  return {
+    message: "Admin created successfully",
+    status: 201
+  };
 }
+export async function authAdmin() {
+  const admin = (await cookies()).get("admin")?.value;
+  if (!admin) {
+    redirect("/auth/login");
+  }
+  const role = JSON.parse(admin).role;
+  return {
+    role
+  };
+}
+export async function logoutAdmin() {
+  (await cookies()).delete("admin");
+  redirect("/auth/login");
+}
+
 // ----------------------------------- client sied------------------------------------------//
 
 export const login = async (phone: string) => {
   connectDb();
+  const admin = await Admin.findOne({ phone });
+  if (admin) {
+    redirect("/auth/login");
+  }
   const user = await Passenger.findOne({ phone });
   if (!user) {
     return {
@@ -90,7 +133,7 @@ export const login = async (phone: string) => {
       status: 401
     };
   }
-  (await cookies()).set("user", JSON.stringify(user) , {maxAge:60*60*24});
-  (await cookies()).set("trip", JSON.stringify(trip), {maxAge:60*60*24});
+  (await cookies()).set("user", JSON.stringify(user), { maxAge: 60 * 60 * 24 });
+  (await cookies()).set("trip", JSON.stringify(trip), { maxAge: 60 * 60 * 24 });
   redirect(`/trip/${String(trip.trip_name).trim()}`);
 };

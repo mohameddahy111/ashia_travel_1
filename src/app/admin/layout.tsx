@@ -19,7 +19,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Image from "next/image";
 import { sideAdminList } from "@/helper/data";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { authAdmin } from "../actions";
+import AdminMenu from "@/components/admin/adminMenu";
 
 const drawerWidth = 240;
 
@@ -31,8 +33,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: "hidden",
   backgroundColor: "#333333",
-  boxShadow:"0 0px 5px #fff"
-
+  boxShadow: "0 0px 5px #fff"
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
@@ -115,6 +116,8 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const [list, setList] = React.useState<any>([]);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const pathName = usePathname();
@@ -125,7 +128,14 @@ export default function AdminLayout({
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  React.useEffect(() => {
+    authAdmin().then((data) => {
+      const list = data?.role?.map((ele: string) => {
+        return sideAdminList.find((v) => v.namespace === ele);
+      });
+      setList(list);
+    });
+  }, []);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -135,7 +145,8 @@ export default function AdminLayout({
         sx={{ bgcolor: "#333333" }}
         open={open}
       >
-        <Toolbar>
+        <Toolbar sx={{display:"flex" , justifyContent:"space-between"}}>
+          <Box display={"flex"} alignItems={"center"} gap={2}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -151,7 +162,7 @@ export default function AdminLayout({
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Box >
             <Image
               src={"https://vcdn.merlinx.eu/image//getbyid/490654"}
               priority
@@ -164,11 +175,15 @@ export default function AdminLayout({
                 boxShadow: "0px 0px 2px #fff",
                 borderRadius: "50%",
                 cursor: "pointer"
-
               }}
               className="Img_bg"
             />
-          </Typography>
+          </Box>
+
+          </Box>
+          <Box>
+         <AdminMenu/>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -182,7 +197,7 @@ export default function AdminLayout({
           </IconButton>
         </DrawerHeader>
         <List>
-          {sideAdminList.map((ele, index) => (
+          {list?.map((ele: any, index: number) => (
             <ListItem
               key={index}
               disablePadding
@@ -190,13 +205,13 @@ export default function AdminLayout({
             >
               <ListItemButton
                 LinkComponent={"a"}
-                href={ele.link}
+                href={ele?.link}
                 sx={[
                   {
                     minHeight: 48,
                     px: 2.5,
                     boxShadow:
-                      ele.link === pathName ? "0 0px 10px #f58d54" : null,
+                      ele?.link === pathName ? "0 0px 10px #f58d54" : null,
                     borderRadius: "10px",
                     m: "5px"
                   },
@@ -225,10 +240,10 @@ export default function AdminLayout({
                         }
                   ]}
                 >
-                  {ele.icon}
+                  {ele?.icon}
                 </ListItemIcon>
                 <ListItemText
-                  primary={ele.title}
+                  primary={ele?.title}
                   sx={[
                     open
                       ? {
@@ -253,8 +268,7 @@ export default function AdminLayout({
           borderRadius: "10px",
           height: "100vh",
           bgcolor: "#222222",
-          overflowY:"scroll"
-        
+          overflowY: "scroll"
         }}
       >
         <DrawerHeader />

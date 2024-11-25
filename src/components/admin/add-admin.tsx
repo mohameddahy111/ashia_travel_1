@@ -16,12 +16,15 @@ import {
   Typography
 } from "@mui/material";
 import { useFormik } from "formik";
+import { createAdmin } from "@/app/actions";
+import { enqueueSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 export interface IAddAdminProps {}
 
 export default function AddAdmin(props: IAddAdminProps) {
   const [open, setOpen] = React.useState(false);
-  const [roles, setRoles] = React.useState<string[]>([]);
+  const router = useRouter();
   function openHandler() {
     setOpen(true);
   }
@@ -34,12 +37,21 @@ export default function AddAdmin(props: IAddAdminProps) {
       name: "",
       phone: "",
       password: "",
-      role: [],
+      role: ["dashboard"],
       lastActive: "",
       email: ""
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const result = await createAdmin(values);
+      if (result.status === 201) {
+        enqueueSnackbar(`${result.message}`, { variant: "success" });
+        formik.resetForm();
+
+        router.push("/admin/admins");
+        closeHandler();
+      } else {
+        enqueueSnackbar(`${result.message}`, { variant: "error" });
+      }
     }
   });
   return (
@@ -62,13 +74,14 @@ export default function AddAdmin(props: IAddAdminProps) {
                 onChange={formik.handleChange}
                 error={formik.touched.name && Boolean(formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
+                required
               />
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 size="small"
                 name="password"
-                type="text"
+                type="password"
                 label="Password"
                 fullWidth
                 value={formik.values.password}
@@ -77,6 +90,7 @@ export default function AddAdmin(props: IAddAdminProps) {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
+                required
               />
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 6 }}>
@@ -90,12 +104,13 @@ export default function AddAdmin(props: IAddAdminProps) {
                 onChange={formik.handleChange}
                 error={formik.touched.phone && Boolean(formik.errors.phone)}
                 helperText={formik.touched.phone && formik.errors.phone}
+                required
               />
             </Grid2>
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 name="email"
-                type="text"
+                type="email"
                 label="email"
                 fullWidth
                 size="small"
@@ -103,6 +118,7 @@ export default function AddAdmin(props: IAddAdminProps) {
                 onChange={formik.handleChange}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
+                required
               />
             </Grid2>
             <Grid2 size={{ xs: 12 }}>
@@ -134,18 +150,18 @@ export default function AddAdmin(props: IAddAdminProps) {
                       }
                       onChange={formik.handleChange}
                       name="role"
-                      value={"admin"}
+                      value={"admins"}
                     />
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Pessanger"
+                      label="Pessangers"
                       defaultChecked={
                         formik.values.role?.find((v) => v === "pessanger") !=
                         null
                       }
                       onChange={formik.handleChange}
                       name="role"
-                      value={"pessanger"}
+                      value={"passengers"}
                     />
                     <FormControlLabel
                       control={<Checkbox />}
@@ -155,7 +171,7 @@ export default function AddAdmin(props: IAddAdminProps) {
                       }
                       onChange={formik.handleChange}
                       name="role"
-                      value={"trip"}
+                      value={"trips"}
                     />
                   </FormGroup>
                 </FormControl>
