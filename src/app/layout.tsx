@@ -3,6 +3,12 @@ import { getLocale, getMessages } from "next-intl/server";
 import { Exo_2 } from "next/font/google";
 import "./globals.css";
 import Snack from "@/components/Snack";
+import "@uploadthing/react/styles.css";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+ 
+import { ourFileRouter } from "@/app/api/uploadthing/core";
+
 
 const exo = Exo_2({
   subsets: ["latin"],
@@ -24,6 +30,7 @@ export default async function RootLayout({
       <body className={exo.className}>
         <Snack>
           <NextIntlClientProvider messages={messages}>
+            <NextSSRPlugin  routerConfig={extractRouterConfig(ourFileRouter)}/>
             {children}
           </NextIntlClientProvider>
         </Snack>

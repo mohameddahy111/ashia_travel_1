@@ -1,19 +1,23 @@
 "use client";
 
+import { deleteImage } from "@/app/actions";
 import DarkBox from "@/components/DarkBox";
+import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
 import { nweTripSchema } from "@/vailtion/yup.schema";
-import { AddPhotoAlternateOutlined } from "@mui/icons-material";
+import { AddPhotoAlternateOutlined, Delete } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
   createTheme,
   CssBaseline,
   Grid2,
+  IconButton,
   MenuItem,
   TextField,
   ThemeProvider,
   Typography
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 import axios from "axios";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
@@ -26,15 +30,9 @@ export default function NewTripPage({}: INewTripPageProps) {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const [tripDays, setTripDays] = React.useState<string>("1");
-  const [imagesHotel, setImagesHotel] = React.useState<File[]>([]);
-  const handleImageChange = (files: File[]) => {
-    if (files.length > 4) {
-      enqueueSnackbar("You can only upload 4 images", { variant: "error" });
-      return;
-    } else {
-      setImagesHotel(files);
-    }
-  };
+  const [imagesHotel, setImagesHotel] = React.useState<
+    { url: string; key: string }[]
+  >([]);
   const theme = createTheme({
     palette: {
       primary: {
@@ -74,7 +72,8 @@ export default function NewTripPage({}: INewTripPageProps) {
         hotel_rating: "",
         google_link: "",
         booking_link: "",
-        hotel_description: ""
+        hotel_description: "",
+        img: [{ url: "", key: "" }]
       },
       flight: {
         gathering_point: "",
@@ -125,6 +124,17 @@ export default function NewTripPage({}: INewTripPageProps) {
       );
     }
   }, [tripDays]);
+  const handleImageChange = async (key: string) => {
+    await deleteImage(key).then((res) => {
+      if (res.success === true) {
+        enqueueSnackbar("Image Deleted Successfully", { variant: "success" });
+        setImagesHotel(imagesHotel.filter((ele) => ele.key !== key));
+        formik.values.hotel.img = imagesHotel.filter((ele) => ele.key !== key);
+      } else {
+        enqueueSnackbar("Image Deleted Failed", { variant: "error" });
+      }
+    });
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -157,13 +167,11 @@ export default function NewTripPage({}: INewTripPageProps) {
                   <TextField
                     select
                     value={formik.values.trip.trip_status as string}
-                    
                     onChange={formik.handleChange}
                     slotProps={{
                       input: {
                         sx: {
                           borderRadius: "20px",
-                          // width: "150px",
                           bgcolor:
                             formik.values.trip.trip_status === "active"
                               ? "#00e676"
@@ -494,19 +502,19 @@ export default function NewTripPage({}: INewTripPageProps) {
                       size={{ xs: 12 }}
                     >
                       <Box
-                        sx={{
-                          width: "70px",
-                          height: "70px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          boxShadow: "0px 0px 10px #333333",
-                          borderRadius: "50%",
-                          cursor: "pointer",
-                          my: 2
-                        }}
+                      // sx={{
+                      //   width: "70px",
+                      //   height: "70px",
+                      //   display: "flex",
+                      //   justifyContent: "center",
+                      //   alignItems: "center",
+                      //   boxShadow: "0px 0px 10px #333333",
+                      //   borderRadius: "50%",
+                      //   cursor: "pointer",
+                      //   my: 2
+                      // }}
                       >
-                        <input
+                        {/* <input
                           accept="image/*"
                           id="hotel_image"
                           type="file"
@@ -528,24 +536,49 @@ export default function NewTripPage({}: INewTripPageProps) {
                               textAlign: "center"
                             }}
                           />
-                        </label>
+                        </label> */}
+                        <UploadDropzone
+                          endpoint={"imageUploader"}
+                          onClientUploadComplete={(res) => {
+                            const list = res.map((ele) => ({
+                              url: ele.url,
+                              key: ele.key
+                            }));
+                            setImagesHotel(list);
+                            formik.values.hotel.img = list;
+                          }}
+                          onUploadError={(err) => {
+                            console.log(err);
+                          }}
+                        />
                       </Box>
                     </Grid2>
                     {imagesHotel.length > 0 && (
                       <Grid2 container spacing={2}>
-                        {Object.keys(imagesHotel).map((ele, index) => (
+                        {imagesHotel.map((ele, index) => (
                           <Grid2
                             size={{ xs: 12, md: 6, lg: 3, sm: 6 }}
                             key={index}
+                            sx={{ position: "relative" }}
                           >
-                            {imagesHotel[index] && (
-                              <img
-                                src={URL.createObjectURL(imagesHotel[index])}
-                                alt="ashia"
-                                width={"100%"}
-                                height={"100%"}
-                              />
-                            )}
+                            <img
+                              src={ele?.url}
+                              alt="ashia"
+                              width={"100%"}
+                              height={"100%"}
+                            />
+                            <Box
+                              sx={{ position: "absolute", top: 1, right: 1 }}
+                            >
+                              <IconButton
+                                onClick={() => {
+                                  handleImageChange(ele?.id);
+                                }}
+                                sx={{ bgcolor: "#fff", opacity: 0.8 }}
+                              >
+                                <Delete sx={{ color: red[400] }} />
+                              </IconButton>
+                            </Box>
                           </Grid2>
                         ))}
                       </Grid2>

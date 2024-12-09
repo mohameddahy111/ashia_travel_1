@@ -11,7 +11,7 @@ import Passenger from "@/schemas/passenger.schema";
 import { redirect } from "next/navigation";
 import Admin from "@/schemas/admins.schema";
 import bcryptjs from "bcryptjs";
-
+import { UTApi } from "uploadthing/server";
 export const setLocale = async (locale: string) => {
   (await cookies()).set("locale", locale);
 };
@@ -109,6 +109,13 @@ export async function authAdmin() {
 export async function logoutAdmin() {
   (await cookies()).delete("admin");
   redirect("/auth/login");
+}
+export async function deleteImage(key: string) {
+  const utapi = new UTApi();
+  const res = await utapi.deleteFiles(key)
+return {
+  success:res.success
+}
 }
 
 // ----------------------------------- client sied------------------------------------------//

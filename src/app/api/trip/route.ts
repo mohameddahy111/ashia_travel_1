@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
   connectDb();
   const data = await req.json();
   const { trip, contact, hotel, flight, program } = data;
-  console.log({ ...program });
   const tripIsExist = await Trip.findOne({ trip_name: trip.trip_name });
   if (tripIsExist) {
     return NextResponse.json(

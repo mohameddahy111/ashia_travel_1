@@ -14,12 +14,7 @@ export const hotelSchema = new mongoose.Schema(
     google_link: { type: String, required: true },
     booking_link: { type: String, required: true },
     hotel_description: { type: String },
-    img: [
-      {
-        img_url: { type: String },
-        img_id: { type: String }
-      }
-    ]
+    img: []
   },
   { timestamps: true }
 );

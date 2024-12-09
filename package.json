@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^7.22.2",
     "@toolpad/core": "^0.9.0",
     "@types/bcryptjs": "^2.4.6",
+    "@uploadthing/react": "^7.1.1",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.13",
@@ -28,6 +29,7 @@
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "swiper": "^11.1.14",
+    "uploadthing": "^7.3.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {

@@ -20,9 +20,9 @@ export default function AdminMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  async function handleLogout(){
+  async function handleLogout() {
     await logoutAdmin();
-    handleClose()
+    handleClose();
   }
   return (
     <React.Fragment>
