@@ -29,7 +29,7 @@ export interface IEditPassengerProps {
 export default function EditPassenger({ info }: IEditPassengerProps) {
   const data = JSON.parse(info);
   const router = useRouter();
-  const trips = useGetData(`http://localhost:3000/api/trip`);
+  const trips = useGetData(`https://ashia-travel-1.vercel.app//api/trip`);
 
   const theme = createTheme({
     palette: {
@@ -60,7 +60,7 @@ export default function EditPassenger({ info }: IEditPassengerProps) {
     },
     onSubmit: async (values) => {
       await axios
-        .put(`http://localhost:3000/api/passenger/${data._id}`, values)
+        .put(`https://ashia-travel-1.vercel.app//api/passenger/${data._id}`, values)
         .then((response) => {
           if (response.status === 200) {
             enqueueSnackbar(`${response.data.message}`, { variant: "success" });

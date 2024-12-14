@@ -123,7 +123,7 @@ export default function EditTrip({ data }: INewTripPageProps) {
     },
     onSubmit: async (values) => {
       await axios
-        .put(`http://localhost:3000/api/trip`, values)
+        .put(`https://ashia-travel-1.vercel.app//api/trip`, values)
         .then((response) => {
           console.log(response);
           if (response.data.status === 200) {

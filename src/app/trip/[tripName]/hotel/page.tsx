@@ -5,6 +5,7 @@ import Hotel from "@/schemas/hotel.schema";
 import { Star, StarOutline } from "@mui/icons-material";
 import { Box, Grid2, Rating, Typography } from "@mui/material";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import * as React from "react";
 
 export interface IProgramPageProps {

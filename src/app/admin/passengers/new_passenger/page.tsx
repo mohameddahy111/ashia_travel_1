@@ -25,7 +25,7 @@ export interface INewPassengerPageProps {}
 
 export default function NewPassengerPage({}: INewPassengerPageProps) {
   const router = useRouter();
-  const trips = useGetData(`http://localhost:3000/api/trip`);
+  const trips = useGetData(`https://ashia-travel-1.vercel.app//api/trip`);
 
   const theme = createTheme({
     palette: {
@@ -56,7 +56,7 @@ export default function NewPassengerPage({}: INewPassengerPageProps) {
     },
     onSubmit: async (values) => {
       await axios
-        .post(`http://localhost:3000/api/passenger`, values)
+        .post(`https://ashia-travel-1.vercel.app//api/passenger`, values)
         .then((response) => {
           if (response.status === 201) {
             enqueueSnackbar(`${response.data.message}`, { variant: "success" });

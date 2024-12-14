@@ -86,7 +86,7 @@ export default function TableTrips({ data }: ITableTripsProps) {
                 >
                   <EditOutlined sx={{ color: "#fff" }} />
                 </IconButton>
-                <DeleteButton url={`http://localhost:3000/api/trip`} id={JSON.stringify(item?.trip?._id)} />
+                <DeleteButton url={`https://ashia-travel-1.vercel.app//api/trip`} id={JSON.stringify(item?.trip?._id)} />
               </TableCell>
             </TableRow>
           ))}

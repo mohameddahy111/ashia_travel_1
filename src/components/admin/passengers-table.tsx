@@ -23,13 +23,13 @@ import * as React from "react";
 export interface IPassengersTableProps {}
 
 export default function PassengersTable({}: IPassengersTableProps) {
-  const { data, loading } = useGetData("http://localhost:3000/api/trip/");
+  const { data, loading } = useGetData("https://ashia-travel-1.vercel.app//api/trip/");
   const [passengers, setPassengers] = React.useState([]);
   const [tripid, setTripid] = React.useState<string>("");
 
   async function getPassengers() {
     const data = await axios.get(
-      `http://localhost:3000/api/trip/${tripid}/passengers`
+      `https://ashia-travel-1.vercel.app//api/trip/${tripid}/passengers`
     );
     setPassengers(data.data);
   }

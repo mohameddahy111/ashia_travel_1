@@ -101,7 +101,7 @@ export default function NewTripPage({}: INewTripPageProps) {
     onSubmit: async (values) => {
       console.log(values);
       await axios
-        .post(`http://localhost:3000/api/trip`, values)
+        .post(`https://ashia-travel-1.vercel.app//api/trip`, values)
         .then((response) => {
           if (response.status === 201) {
             enqueueSnackbar(`${response.data.message}`, { variant: "success" });
