@@ -572,7 +572,7 @@ export default function NewTripPage({}: INewTripPageProps) {
                             >
                               <IconButton
                                 onClick={() => {
-                                  handleImageChange(ele?.id);
+                                  handleImageChange(ele?.key);
                                 }}
                                 sx={{ bgcolor: "#fff", opacity: 0.8 }}
                               >
